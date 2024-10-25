@@ -1,41 +1,37 @@
 BUILDDIR = build
-
 SRCDIR = src
-
 TESTDIR = tests
 
-CFILES = $(wildcard $(SRCDIR)/*.c)
-  
-OFILES = $(patsubst $(SRCDIR)/%.c, $(BUILDDIR)/%.o, $(CFILES))
-
+SRCFILES = $(wildcard $(SRCDIR)/*.c)
+SRCOFILES = $(patsubst $(SRCDIR)/%.c, $(BUILDDIR)/%.o, $(SRCFILES))
 TESTFILES = $(wildcard $(TESTDIR)/*.c)
-
 TESTOFILES = $(patsubst $(TESTDIR)/%.c, $(BUILDDIR)/%.o, $(TESTFILES))
 
 CFLAGS = -Wall -Wextra -Werror
+CC = gcc
 
-NAME = cunicode.a
-TESTNAME = test
+NAME = $(BUILDDIR)/cunicode.a
+TESTNAME = $(BUILDDIR)/test
 
 all: $(BUILDDIR) $(NAME)
 
 $(BUILDDIR):
-	mkdir build
+	mkdir -p $@
 
-$(NAME): $(OFILES)
-	ar rcs $(BUILDDIR)/$(NAME) $(OFILES) 
+$(NAME): $(SRCOFILES)
+	ar rcs $@ $^
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
-	gcc -c $< -o $@ $(CFLAGS)
+	$(CC) -c $< -o $@ $(CFLAGS)
 
 $(BUILDDIR)/%.o: $(TESTDIR)/%.c
-	gcc -c $< -o $@ $(CFLAGS)
+	$(CC) -c $< -o $@ $(CFLAGS)
 
 test: all $(TESTOFILES)
-	gcc $(TESTOFILES) $(BUILDDIR)/$(NAME) -o $(BUILDDIR)/test -lcriterion
-	$(BUILDDIR)/$(TESTNAME)
+	$(CC) $(TESTOFILES) $(NAME) -o $(TESTNAME) -lcriterion
+	$(TESTNAME)
 
 clean:
 	rm build/*
 
-.PHONY:  all clean
+.PHONY:  all clean test
