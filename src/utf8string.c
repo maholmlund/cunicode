@@ -34,3 +34,19 @@ bool bytes_are_valid_utf8(uint8_t *bytes, size_t len) {
 		return true;
 	}
 }
+
+struct Utf8String Utf8String_from_bytes(uint8_t *bytes, size_t len) {
+	struct Utf8String error = {.bytes = NULL, .size = 0};
+	if (!bytes_are_valid_utf8(bytes, len)) {
+		return error;
+	}
+	uint8_t *new_bytes = malloc(len);
+	if (new_bytes == NULL) {
+		return error;
+	}
+	struct Utf8String result = {.bytes = new_bytes, .size = len};
+	memcpy(result.bytes, bytes, len);
+	return result;
+}
+
+void Utf8Strig_free(struct Utf8String *s) { free(s->bytes); }

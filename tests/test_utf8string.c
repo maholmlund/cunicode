@@ -46,3 +46,19 @@ Test(bytes_are_valid_utf8_invalid, 3) {
 	                     0x18, 0x38, 0x5D, 0x52, 0x83, 0x47, 0xFE, 0xAF};
 	cr_assert(!bytes_are_valid_utf8(&bytes[0], 16));
 }
+
+Test(Utf8String_creation, simple) {
+	char *bytes = "Hello, World!";
+	cr_assert(bytes_are_valid_utf8((uint8_t *)bytes, strlen(bytes)));
+	struct Utf8String s =
+	    Utf8String_from_bytes((uint8_t *)bytes, strlen(bytes));
+	cr_assert(s.bytes != NULL);
+	cr_assert((char)s.bytes[0] == 'H');
+	Utf8Strig_free(&s);
+}
+
+Test(Utf8String_creation, invalid) {
+	uint8_t bytes[3] = {0xFF, 0x0, 0x0};
+	struct Utf8String s = Utf8String_from_bytes(&bytes[0], 3);
+	cr_assert(s.bytes == NULL);
+}
