@@ -5,7 +5,7 @@
 
 struct Utf8CodePoint {
 	size_t len;
-	unsigned char bytes[4];
+	uint8_t bytes[4];
 };
 
 struct Utf8CodePoint Utf8CodePoint_from_bytes(unsigned char *bytes, size_t len);

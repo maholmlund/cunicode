@@ -2,8 +2,7 @@
 
 #include "cunicode.h"
 
-struct Utf8CodePoint Utf8CodePoint_from_bytes(unsigned char *bytes,
-                                              size_t len) {
+struct Utf8CodePoint Utf8CodePoint_from_bytes(uint8_t *bytes, size_t len) {
 	struct Utf8CodePoint result = {0, ""};
 	if (len < 1 || len > 4) {
 		return result;
