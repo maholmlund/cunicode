@@ -62,3 +62,14 @@ Test(Utf8String_creation, invalid) {
 	struct Utf8String s = Utf8String_from_bytes(&bytes[0], 3);
 	cr_assert(s.bytes == NULL);
 }
+
+Test(Utf8String_copy, first) {
+	struct Utf8String s =
+	    Utf8String_from_bytes((uint8_t *)"Hello World!", 12);
+	cr_assert(s.size == 12);
+	struct Utf8String copy = Utf8String_copy(&s);
+	cr_assert(copy.size == s.size);
+	cr_assert(memcmp(s.bytes, copy.bytes, s.size) == 0);
+	Utf8Strig_free(&s);
+	Utf8Strig_free(&copy);
+}

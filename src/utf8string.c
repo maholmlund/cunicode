@@ -50,3 +50,15 @@ struct Utf8String Utf8String_from_bytes(uint8_t *bytes, size_t len) {
 }
 
 void Utf8Strig_free(struct Utf8String *s) { free(s->bytes); }
+
+struct Utf8String Utf8String_copy(struct Utf8String *target) {
+	uint8_t *new_bytes = malloc(target->size);
+	struct Utf8String result = {.bytes = NULL, .size = 0};
+	if (new_bytes == NULL) {
+		return result;
+	}
+	memcpy(new_bytes, target->bytes, target->size);
+	result.bytes = new_bytes;
+	result.size = target->size;
+	return result;
+}
