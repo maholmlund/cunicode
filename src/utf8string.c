@@ -49,7 +49,7 @@ struct Utf8String Utf8String_from_bytes(uint8_t *bytes, size_t len) {
 	return result;
 }
 
-void Utf8Strig_free(struct Utf8String *s) { free(s->bytes); }
+void Utf8String_free(struct Utf8String *s) { free(s->bytes); }
 
 struct Utf8String Utf8String_copy(struct Utf8String *target) {
 	uint8_t *new_bytes = malloc(target->size);

@@ -19,6 +19,6 @@ bool bytes_are_valid_utf8(uint8_t *bytes, size_t len);
 
 struct Utf8String Utf8String_from_bytes(uint8_t *bytes, size_t len);
 
-void Utf8Strig_free(struct Utf8String *s);
+void Utf8String_free(struct Utf8String *s);
 
 struct Utf8String Utf8String_copy(struct Utf8String *target);

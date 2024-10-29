@@ -54,7 +54,7 @@ Test(Utf8String_creation, simple) {
 	    Utf8String_from_bytes((uint8_t *)bytes, strlen(bytes));
 	cr_assert(s.bytes != NULL);
 	cr_assert((char)s.bytes[0] == 'H');
-	Utf8Strig_free(&s);
+	Utf8String_free(&s);
 }
 
 Test(Utf8String_creation, invalid) {
@@ -70,6 +70,6 @@ Test(Utf8String_copy, first) {
 	struct Utf8String copy = Utf8String_copy(&s);
 	cr_assert(copy.size == s.size);
 	cr_assert(memcmp(s.bytes, copy.bytes, s.size) == 0);
-	Utf8Strig_free(&s);
-	Utf8Strig_free(&copy);
+	Utf8String_free(&s);
+	Utf8String_free(&copy);
 }
