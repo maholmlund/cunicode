@@ -2,7 +2,7 @@
 
 #include "cunicode.h"
 
-bool bytes_are_valid_utf8(uint8_t *bytes, size_t len) {
+bool bytes_are_valid_utf8(const uint8_t *bytes, size_t len) {
 	size_t i = 0;
 	size_t continuation_bytes_left = 0;
 	while (i < len) {
@@ -35,7 +35,7 @@ bool bytes_are_valid_utf8(uint8_t *bytes, size_t len) {
 	}
 }
 
-struct Utf8String Utf8String_from_bytes(uint8_t *bytes, size_t len) {
+struct Utf8String Utf8String_from_bytes(const uint8_t *bytes, size_t len) {
 	struct Utf8String error = {.bytes = NULL, .size = 0};
 	if (!bytes_are_valid_utf8(bytes, len)) {
 		return error;
@@ -51,7 +51,7 @@ struct Utf8String Utf8String_from_bytes(uint8_t *bytes, size_t len) {
 
 void Utf8String_free(struct Utf8String *s) { free(s->bytes); }
 
-struct Utf8String Utf8String_copy(struct Utf8String *target) {
+struct Utf8String Utf8String_copy(const struct Utf8String *target) {
 	uint8_t *new_bytes = malloc(target->size);
 	struct Utf8String result = {.bytes = NULL, .size = 0};
 	if (new_bytes == NULL) {

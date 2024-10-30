@@ -13,12 +13,13 @@ struct Utf8String {
 	uint8_t *bytes;
 };
 
-struct Utf8CodePoint Utf8CodePoint_from_bytes(unsigned char *bytes, size_t len);
+struct Utf8CodePoint Utf8CodePoint_from_bytes(const unsigned char *bytes,
+                                              size_t len);
 
-bool bytes_are_valid_utf8(uint8_t *bytes, size_t len);
+bool bytes_are_valid_utf8(const uint8_t *bytes, size_t len);
 
-struct Utf8String Utf8String_from_bytes(uint8_t *bytes, size_t len);
+struct Utf8String Utf8String_from_bytes(const uint8_t *bytes, size_t len);
 
 void Utf8String_free(struct Utf8String *s);
 
-struct Utf8String Utf8String_copy(struct Utf8String *target);
+struct Utf8String Utf8String_copy(const struct Utf8String *target);
