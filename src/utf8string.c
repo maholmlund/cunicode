@@ -62,3 +62,15 @@ struct Utf8String Utf8String_copy(const struct Utf8String *target) {
 	result.size = target->size;
 	return result;
 }
+
+struct Utf8String Utf8String_from_cstring(const char *s) {
+	struct Utf8String result = {.bytes = NULL, .size = 0};
+	uint8_t *bytes = malloc(strlen(s));
+	if (bytes == NULL) {
+		return result;
+	}
+	memcpy(bytes, s, strlen(s));
+	result.bytes = bytes;
+	result.size = strlen(s);
+	return result;
+}

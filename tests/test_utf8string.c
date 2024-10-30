@@ -73,3 +73,10 @@ Test(Utf8String_copy, first) {
 	Utf8String_free(&s);
 	Utf8String_free(&copy);
 }
+
+Test(Utf8String_from_cstring, first) {
+	char *string = "Hêllö World!";
+	struct Utf8String result = Utf8String_from_cstring(string);
+	cr_assert(result.size == strlen(string));
+	cr_assert(memcmp(string, result.bytes, strlen(string)) == 0);
+}
