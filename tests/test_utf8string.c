@@ -80,3 +80,34 @@ Test(Utf8String_from_cstring, first) {
 	cr_assert(result.size == strlen(string));
 	cr_assert(memcmp(string, result.bytes, strlen(string)) == 0);
 }
+
+Test(Utf8String_eq, equal_1) {
+	char *s = "Hello World!\n";
+	struct Utf8String a = Utf8String_from_cstring(s);
+	struct Utf8String b = Utf8String_from_cstring(s);
+	cr_assert(Utf8String_eq(&a, &b));
+}
+
+Test(Utf8String_eq, equal_2) {
+	char *first = "Hello World!\n";
+	char *second = "Hello World!\n";
+	struct Utf8String a = Utf8String_from_cstring(first);
+	struct Utf8String b = Utf8String_from_cstring(second);
+	cr_assert(Utf8String_eq(&a, &b));
+}
+
+Test(Utf8String_eq, not_equal_1) {
+	char *first = "Hellö";   // last character is U+0308
+	char *second = "Hellö";  // last character is U+00F6
+	struct Utf8String a = Utf8String_from_cstring(first);
+	struct Utf8String b = Utf8String_from_cstring(second);
+	cr_assert(!Utf8String_eq(&a, &b));
+}
+
+Test(Utf8String_eq, not_equal_2) {
+	char *first = "Hello World!";  // last character is U+0308
+	char *second = "Foo Bar";      // last character is U+00F6
+	struct Utf8String a = Utf8String_from_cstring(first);
+	struct Utf8String b = Utf8String_from_cstring(second);
+	cr_assert(!Utf8String_eq(&a, &b));
+}

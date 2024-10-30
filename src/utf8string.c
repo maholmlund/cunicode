@@ -74,3 +74,10 @@ struct Utf8String Utf8String_from_cstring(const char *s) {
 	result.size = strlen(s);
 	return result;
 }
+
+bool Utf8String_eq(const struct Utf8String *a, const struct Utf8String *b) {
+	if (a->size != b->size) {
+		return false;
+	}
+	return memcmp(a, b, a->size);
+}
