@@ -79,5 +79,20 @@ bool Utf8String_eq(const struct Utf8String *a, const struct Utf8String *b) {
 	if (a->size != b->size) {
 		return false;
 	}
-	return memcmp(a, b, a->size);
+	if (memcmp(a->bytes, b->bytes, a->size) == 0)
+		return true;
+	else
+		return false;
+}
+
+bool Utf8String_append(struct Utf8String *s,
+                       const struct Utf8String *extension) {
+	uint8_t *new_bytes = realloc(s->bytes, s->size + extension->size);
+	if (new_bytes == NULL) {
+		return false;
+	}
+	memcpy(new_bytes + s->size, extension->bytes, extension->size);
+	s->size = s->size + extension->size;
+	s->bytes = new_bytes;
+	return true;
 }

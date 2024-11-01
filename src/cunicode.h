@@ -27,3 +27,6 @@ struct Utf8String Utf8String_copy(const struct Utf8String *target);
 struct Utf8String Utf8String_from_cstring(const char *s);
 
 bool Utf8String_eq(const struct Utf8String *a, const struct Utf8String *b);
+
+bool Utf8String_append(struct Utf8String *s,
+                       const struct Utf8String *extension);

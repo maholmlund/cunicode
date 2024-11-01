@@ -111,3 +111,19 @@ Test(Utf8String_eq, not_equal_2) {
 	struct Utf8String b = Utf8String_from_cstring(second);
 	cr_assert(!Utf8String_eq(&a, &b));
 }
+
+Test(Utf8String_append, first) {
+	struct Utf8String original = Utf8String_from_cstring("Hello ");
+	struct Utf8String extension = Utf8String_from_cstring("World!");
+	struct Utf8String goal = Utf8String_from_cstring("Hello World!");
+	Utf8String_append(&original, &extension);
+	cr_assert(Utf8String_eq(&original, &goal));
+}
+
+Test(Utf8String_append, append_empty) {
+	struct Utf8String original = Utf8String_from_cstring("Hello");
+	struct Utf8String extension = Utf8String_from_cstring("");
+	struct Utf8String goal = Utf8String_from_cstring("Hello");
+	Utf8String_append(&original, &extension);
+	cr_assert(Utf8String_eq(&original, &goal));
+}
