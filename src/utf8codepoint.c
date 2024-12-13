@@ -39,3 +39,24 @@ struct Utf8CodePoint Utf8CodePoint_from_bytes(const uint8_t *bytes,
 	}
 	return result;
 }
+
+struct Utf8CodePoint Utf8CodePoint_from_index(const struct Utf8String *s,
+                                              size_t i) {
+	size_t len = 0;
+	if (*(s->bytes + i) >> 3 == 0b00011110)
+		len = 4;
+	else if (*(s->bytes + i) >> 4 == 0b00001110)
+		len = 3;
+	else if (*(s->bytes + i) >> 5 == 0b00000110)
+		len = 2;
+	else if (*(s->bytes + i) >> 7 == 0b00000000)
+		len = 1;
+	else {
+		struct Utf8CodePoint invalid = {0, ""};
+		return invalid;
+	}
+	struct Utf8CodePoint point;
+	memcpy(&point.bytes, s->bytes + i, len);
+	point.len = len;
+	return point;
+}

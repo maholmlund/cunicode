@@ -16,6 +16,9 @@ struct Utf8String {
 struct Utf8CodePoint Utf8CodePoint_from_bytes(const unsigned char *bytes,
                                               size_t len);
 
+struct Utf8CodePoint Utf8CodePoint_from_index(const struct Utf8String *s,
+                                              size_t i);
+
 bool bytes_are_valid_utf8(const uint8_t *bytes, size_t len);
 
 struct Utf8String Utf8String_from_bytes(const uint8_t *bytes, size_t len);
@@ -31,4 +34,5 @@ bool Utf8String_eq(const struct Utf8String *a, const struct Utf8String *b);
 bool Utf8String_append(struct Utf8String *s,
                        const struct Utf8String *extension);
 
-bool Utf8String_starts_with(struct Utf8String *s, const struct Utf8String *start);
+bool Utf8String_starts_with(struct Utf8String *s,
+                            const struct Utf8String *start);
