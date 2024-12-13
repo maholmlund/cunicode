@@ -30,3 +30,5 @@ bool Utf8String_eq(const struct Utf8String *a, const struct Utf8String *b);
 
 bool Utf8String_append(struct Utf8String *s,
                        const struct Utf8String *extension);
+
+bool Utf8String_starts_with(struct Utf8String *s, const struct Utf8String *start);

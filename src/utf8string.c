@@ -96,3 +96,13 @@ bool Utf8String_append(struct Utf8String *s,
 	s->bytes = new_bytes;
 	return true;
 }
+
+bool Utf8String_starts_with(struct Utf8String *s,
+                            const struct Utf8String *start) {
+	if (start->size > s->size) return false;
+	size_t len = start->size;
+	if (memcmp(s->bytes, start->bytes, len) == 0)
+		return true;
+	else
+		return false;
+}

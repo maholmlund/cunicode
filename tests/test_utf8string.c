@@ -127,3 +127,27 @@ Test(Utf8String_append, append_empty) {
 	Utf8String_append(&original, &extension);
 	cr_assert(Utf8String_eq(&original, &goal));
 }
+
+Test(Utf8String_starts_with, basic) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String start = Utf8String_from_cstring("Hello");
+	cr_assert(Utf8String_starts_with(&s, &start));
+}
+
+Test(Utf8String_starts_with, empty) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String start = Utf8String_from_cstring("");
+	cr_assert(Utf8String_starts_with(&s, &start));
+}
+
+Test(Utf8String_starts_with, does_not_start) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String start = Utf8String_from_cstring("ello");
+	cr_assert(!Utf8String_starts_with(&s, &start));
+}
+
+Test(Utf8String_starts_with, longer_start) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String start = Utf8String_from_cstring("Hello World!!!!");
+	cr_assert(!Utf8String_starts_with(&s, &start));
+}
