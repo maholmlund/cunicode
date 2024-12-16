@@ -170,3 +170,9 @@ struct Utf8String Utf8String_get_substr(const struct Utf8String *s, size_t i,
 	struct Utf8String result = {len, new_bytes};
 	return result;
 }
+
+bool Utf8String_is_codepoint_start(const struct Utf8String *s, size_t i) {
+	if (i >= s->size) {
+		return false;
+	} else return get_codepoint_len(*(s->bytes + i)) != -1;
+}

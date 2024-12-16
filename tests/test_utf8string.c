@@ -238,3 +238,23 @@ Test(Utf8String_get_substr, invalid_second) {
 	struct Utf8String result = Utf8String_get_substr(&s, 2, 5);
 	cr_assert(result.bytes == NULL);
 }
+
+Test(Utf8String_is_codepoint_start, valid_first) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	cr_assert(Utf8String_is_codepoint_start(&s, 4));
+}
+
+Test(Utf8String_is_codepoint_start, valid_second) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	cr_assert(!Utf8String_is_codepoint_start(&s, 12));
+}
+
+Test(Utf8String_is_codepoint_start, complex_first) {
+	struct Utf8String s = Utf8String_from_cstring("🐪🎳fεa👣🎳fa🆓\n🤗");
+	cr_assert(Utf8String_is_codepoint_start(&s, 8));
+}
+
+Test(Utf8String_is_codepoint_start, complex_second) {
+	struct Utf8String s = Utf8String_from_cstring("🐪🎳fεa👣🎳fa🆓\n🤗");
+	cr_assert(!Utf8String_is_codepoint_start(&s, 13));
+}
