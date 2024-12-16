@@ -42,3 +42,6 @@ size_t Utf8String_find(const struct Utf8String *s,
 
 size_t Utf8String_find_after(const struct Utf8String *s,
                              const struct Utf8String *target, size_t i);
+
+struct Utf8String Utf8String_get_substr(const struct Utf8String *s, size_t i,
+                                        size_t len);

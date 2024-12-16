@@ -149,3 +149,24 @@ size_t Utf8String_find(const struct Utf8String *s,
                        const struct Utf8String *target) {
 	return Utf8String_find_after(s, target, 0);
 }
+
+struct Utf8String Utf8String_get_substr(const struct Utf8String *s, size_t i,
+                                        size_t len) {
+	struct Utf8String invalid = {0, NULL};
+	if (s->size - i < len) {
+		return invalid;
+	}
+	if (get_codepoint_len(*(s->bytes + i)) == -1 ||
+	    (s->size - i != len &&
+	     get_codepoint_len(*(s->bytes + i + len)) == -1)) {
+		return invalid;
+	}
+
+	uint8_t *new_bytes = malloc(len);
+	if (new_bytes == NULL) {
+		return invalid;
+	}
+	memcpy(new_bytes, s->bytes + i, len);
+	struct Utf8String result = {len, new_bytes};
+	return result;
+}

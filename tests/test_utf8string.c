@@ -205,3 +205,36 @@ Test(Utf8String_find_after, invalid_complex) {
 	struct Utf8String target = Utf8String_from_cstring("🎳f");
 	cr_assert(Utf8String_find_after(&s, &target, 6) == s.size);
 }
+
+Test(Utf8String_get_substr, simple_first) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String target = Utf8String_from_cstring("Wor");
+	struct Utf8String result = Utf8String_get_substr(&s, 6, 3);
+	cr_assert(Utf8String_eq(&target, &result));
+}
+
+Test(Utf8String_get_substr, simple_second) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String target = Utf8String_from_cstring("World!");
+	struct Utf8String result = Utf8String_get_substr(&s, 6, 6);
+	cr_assert(Utf8String_eq(&target, &result));
+}
+
+Test(Utf8String_get_substr, complex_first) {
+	struct Utf8String s = Utf8String_from_cstring("🐪🎳fεa👣🎳fa🆓\n🤗");
+	struct Utf8String target = Utf8String_from_cstring("εa👣");
+	struct Utf8String result = Utf8String_get_substr(&s, 9, 7);
+	cr_assert(Utf8String_eq(&target, &result));
+}
+
+Test(Utf8String_get_substr, invalid_first) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String result = Utf8String_get_substr(&s, 6, 7);
+	cr_assert(result.bytes == NULL);
+}
+
+Test(Utf8String_get_substr, invalid_second) {
+	struct Utf8String s = Utf8String_from_cstring("🐪🎳fεa👣🎳fa🆓\n🤗");
+	struct Utf8String result = Utf8String_get_substr(&s, 2, 5);
+	cr_assert(result.bytes == NULL);
+}
