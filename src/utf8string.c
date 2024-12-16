@@ -115,14 +115,14 @@ bool Utf8String_starts_with(struct Utf8String *s,
 		return false;
 }
 
-size_t Utf8String_find(const struct Utf8String *s,
-                       const struct Utf8String *target) {
-	if (s->size < target->size) {
+size_t Utf8String_find_after(const struct Utf8String *s,
+                             const struct Utf8String *target, size_t start) {
+	if (s->size - start < target->size) {
 		return s->size;
 	}
 	size_t result;
 	bool found = false;
-	for (size_t i = 0; i < s->size;) {
+	for (size_t i = start; i < s->size;) {
 		if (s->size - i < target->size) {
 			found = false;
 			break;
@@ -133,6 +133,9 @@ size_t Utf8String_find(const struct Utf8String *s,
 			break;
 		}
 		int len = get_codepoint_len(*(s->bytes + i));
+		if (len == -1) {
+			return s->size;
+		}
 		i += len;
 	}
 	if (found) {
@@ -140,4 +143,9 @@ size_t Utf8String_find(const struct Utf8String *s,
 	} else {
 		return s->size;
 	}
+}
+
+size_t Utf8String_find(const struct Utf8String *s,
+                       const struct Utf8String *target) {
+	return Utf8String_find_after(s, target, 0);
 }

@@ -39,3 +39,6 @@ bool Utf8String_starts_with(struct Utf8String *s,
 
 size_t Utf8String_find(const struct Utf8String *s,
                        const struct Utf8String *target);
+
+size_t Utf8String_find_after(const struct Utf8String *s,
+                             const struct Utf8String *target, size_t i);

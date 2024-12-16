@@ -181,3 +181,27 @@ Test(Utf8String_find, empty_target) {
 	struct Utf8String target = Utf8String_from_cstring("");
 	cr_assert(Utf8String_find(&s, &target) == 0);
 }
+
+Test(Utf8String_find_after, valid_simple) {
+	struct Utf8String s = Utf8String_from_cstring("abbabba");
+	struct Utf8String target = Utf8String_from_cstring("bb");
+	cr_assert(Utf8String_find_after(&s, &target, 2) == 4);
+}
+
+Test(Utf8String_find_after, valid_complex) {
+	struct Utf8String s = Utf8String_from_cstring("🐪🎳fεa👣🎳fa🆓\n🤗");
+	struct Utf8String target = Utf8String_from_cstring("🎳f");
+	cr_assert(Utf8String_find_after(&s, &target, 11) == 16);
+}
+
+Test(Utf8String_find_after, invalid_simple) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String target = Utf8String_from_cstring("llo");
+	cr_assert(Utf8String_find_after(&s, &target, 3) == s.size);
+}
+
+Test(Utf8String_find_after, invalid_complex) {
+	struct Utf8String s = Utf8String_from_cstring("🐪🎳fεa👣🎳fa🆓\n🤗");
+	struct Utf8String target = Utf8String_from_cstring("🎳f");
+	cr_assert(Utf8String_find_after(&s, &target, 6) == s.size);
+}
