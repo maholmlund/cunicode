@@ -258,3 +258,33 @@ Test(Utf8String_is_codepoint_start, complex_second) {
 	struct Utf8String s = Utf8String_from_cstring("🐪🎳fεa👣🎳fa🆓\n🤗");
 	cr_assert(!Utf8String_is_codepoint_start(&s, 13));
 }
+
+Test(Utf8String_ends_with, valid_first) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String end = Utf8String_from_cstring("ld!");
+	cr_assert(Utf8String_ends_with(&s, &end));
+}
+
+Test(Utf8String_ends_with, valid_second) {
+	struct Utf8String s = Utf8String_from_cstring("Hello Wor🐪🎳");
+	struct Utf8String end = Utf8String_from_cstring("🐪🎳");
+	cr_assert(Utf8String_ends_with(&s, &end));
+}
+
+Test(Utf8String_ends_with, valid_third) {
+	struct Utf8String s = Utf8String_from_cstring("Hello Wor🐪🎳");
+	struct Utf8String end = Utf8String_from_cstring("🐪!🎳");
+	cr_assert(!Utf8String_ends_with(&s, &end));
+}
+
+Test(Utf8String_ends_with, valid_fourth) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String end = Utf8String_from_cstring("Hello World!");
+	cr_assert(Utf8String_ends_with(&s, &end));
+}
+
+Test(Utf8String_ends_with, invalid_first) {
+	struct Utf8String s = Utf8String_from_cstring("Hello Wor🐪🎳");
+	struct Utf8String end = Utf8String_from_cstring("Hello Wor🐪🎳!");
+	cr_assert(!Utf8String_ends_with(&s, &end));
+}

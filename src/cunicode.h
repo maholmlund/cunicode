@@ -37,6 +37,8 @@ bool Utf8String_append(struct Utf8String *s,
 bool Utf8String_starts_with(struct Utf8String *s,
                             const struct Utf8String *start);
 
+bool Utf8String_ends_with(struct Utf8String *s, const struct Utf8String *end);
+
 size_t Utf8String_find(const struct Utf8String *s,
                        const struct Utf8String *target);
 

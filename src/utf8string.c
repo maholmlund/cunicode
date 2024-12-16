@@ -176,3 +176,13 @@ bool Utf8String_is_codepoint_start(const struct Utf8String *s, size_t i) {
 		return false;
 	} else return get_codepoint_len(*(s->bytes + i)) != -1;
 }
+
+bool Utf8String_ends_with(struct Utf8String *s, const struct Utf8String *end) {
+	if (end->size > s->size) {
+		return false;
+	}
+	if (memcmp(s->bytes + (s->size - end->size), end->bytes, end->size) == 0)
+		return true;
+	else
+		return false;
+}
