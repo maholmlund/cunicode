@@ -151,3 +151,33 @@ Test(Utf8String_starts_with, longer_start) {
 	struct Utf8String start = Utf8String_from_cstring("Hello World!!!!");
 	cr_assert(!Utf8String_starts_with(&s, &start));
 }
+
+Test(Utf8String_find, valid_simple) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String target = Utf8String_from_cstring("Wor");
+	cr_assert(Utf8String_find(&s, &target) == 6);
+}
+
+Test(Utf8String_find, valid_complex) {
+	struct Utf8String s = Utf8String_from_cstring("🐪εa👣🎳fa🆓\n🤗");
+	struct Utf8String target = Utf8String_from_cstring("🎳f");
+	cr_assert(Utf8String_find(&s, &target) == 11);
+}
+
+Test(Utf8String_find, invalid_simple) {
+	struct Utf8String s = Utf8String_from_cstring("Hello World!");
+	struct Utf8String target = Utf8String_from_cstring("orld!n");
+	cr_assert(Utf8String_find(&s, &target) == s.size);
+}
+
+Test(Utf8String_find, invalid_complex) {
+	struct Utf8String s = Utf8String_from_cstring("🐪εa👣🎳fa🆓\n🤗");
+	struct Utf8String target = Utf8String_from_cstring("f\n🤗");
+	cr_assert(Utf8String_find(&s, &target) == s.size);
+}
+
+Test(Utf8String_find, empty_target) {
+	struct Utf8String s = Utf8String_from_cstring("🐪εa👣🎳fa🆓\n🤗");
+	struct Utf8String target = Utf8String_from_cstring("");
+	cr_assert(Utf8String_find(&s, &target) == 0);
+}

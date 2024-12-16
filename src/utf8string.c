@@ -106,3 +106,39 @@ bool Utf8String_starts_with(struct Utf8String *s,
 	else
 		return false;
 }
+
+size_t Utf8String_find(const struct Utf8String *s,
+                       const struct Utf8String *target) {
+	if (s->size < target->size) {
+		return s->size;
+	}
+	size_t result;
+	bool found = false;
+	for (size_t i = 0; i < s->size;) {
+		if (s->size - i < target->size) {
+			found = false;
+			break;
+		}
+		if (memcmp(s->bytes + i, target->bytes, target->size) == 0) {
+			found = true;
+			result = i;
+			break;
+		}
+		int len;
+		if (*(s->bytes + i) >> 3 == 0b00011110) {
+			len = 4;
+		} else if (*(s->bytes + i) >> 4 == 0b00001110) {
+			len = 3;
+		} else if (*(s->bytes + i) >> 5 == 0b00000110) {
+			len = 2;
+		} else {
+			len = 1;
+		}
+		i += len;
+	}
+	if (found) {
+		return result;
+	} else {
+		return s->size;
+	}
+}
