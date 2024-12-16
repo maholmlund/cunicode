@@ -2,23 +2,31 @@
 
 #include "cunicode.h"
 
+int get_codepoint_len(const uint8_t byte) {
+	if (byte >> 7 == 0b00000000) {
+		return 1;
+	} else if (byte >> 5 == 0b00000110) {
+		return 2;
+	} else if (byte >> 4 == 0b00001110) {
+		return 3;
+	} else if (byte >> 3 == 0b00011110) {
+		return 4;
+	} else {
+		return -1;
+	}
+}
+
 bool bytes_are_valid_utf8(const uint8_t *bytes, size_t len) {
 	size_t i = 0;
-	size_t continuation_bytes_left = 0;
+	int continuation_bytes_left = 0;
 	while (i < len) {
 		uint8_t first_byte = bytes[i];
 
-		if (first_byte >> 7 == 0) {
-			continuation_bytes_left = 0;
+		continuation_bytes_left = get_codepoint_len(first_byte) - 1;
+		if (continuation_bytes_left == 0) {
 			i++;
 			continue;
-		} else if (first_byte >> 5 == 0b0110) {
-			continuation_bytes_left = 1;
-		} else if (first_byte >> 4 == 0b01110) {
-			continuation_bytes_left = 2;
-		} else if (first_byte >> 3 == 0b011110) {
-			continuation_bytes_left = 3;
-		} else {
+		} else if (continuation_bytes_left == -2) {
 			return false;
 		}
 		i++;
@@ -124,16 +132,7 @@ size_t Utf8String_find(const struct Utf8String *s,
 			result = i;
 			break;
 		}
-		int len;
-		if (*(s->bytes + i) >> 3 == 0b00011110) {
-			len = 4;
-		} else if (*(s->bytes + i) >> 4 == 0b00001110) {
-			len = 3;
-		} else if (*(s->bytes + i) >> 5 == 0b00000110) {
-			len = 2;
-		} else {
-			len = 1;
-		}
+		int len = get_codepoint_len(*(s->bytes + i));
 		i += len;
 	}
 	if (found) {
