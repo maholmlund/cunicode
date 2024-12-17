@@ -80,6 +80,7 @@ struct Utf8String Utf8String_copy(const struct Utf8String *target) {
 
 struct Utf8String Utf8String_from_cstring(const char *s) {
 	struct Utf8String result = {.bytes = NULL, .size = 0};
+	if (!bytes_are_valid_utf8((uint8_t *)s, strlen(s))) return result;
 	uint8_t *bytes = malloc(strlen(s));
 	if (bytes == NULL) {
 		return result;
