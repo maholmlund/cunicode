@@ -47,6 +47,16 @@ Test(bytes_are_valid_utf8_invalid, 3) {
 	cr_assert(!bytes_are_valid_utf8(&bytes[0], 16));
 }
 
+Test(bytes_are_ascii, first) {
+	uint8_t bytes[] = "Hello World!\n";
+	cr_assert(bytes_are_ascii(bytes, 13));
+}
+
+Test(bytes_are_ascii, second) {
+	uint8_t bytes[] = "Hel°ζתrld!\n";
+	cr_assert(!bytes_are_ascii(bytes, strlen((char *)bytes)));
+}
+
 Test(Utf8String_creation, simple) {
 	char *bytes = "Hello, World!";
 	cr_assert(bytes_are_valid_utf8((uint8_t *)bytes, strlen(bytes)));

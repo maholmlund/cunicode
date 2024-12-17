@@ -43,6 +43,13 @@ bool bytes_are_valid_utf8(const uint8_t *bytes, size_t len) {
 	}
 }
 
+bool bytes_are_ascii(const uint8_t *bytes, size_t len) {
+	for (size_t i = 0; i < len; i++) {
+		if (bytes[i] > 127) return false;
+	}
+	return true;
+}
+
 struct Utf8String Utf8String_from_bytes(const uint8_t *bytes, size_t len) {
 	struct Utf8String error = {.bytes = NULL, .size = 0};
 	if (!bytes_are_valid_utf8(bytes, len)) {
@@ -174,14 +181,16 @@ struct Utf8String Utf8String_get_substr(const struct Utf8String *s, size_t i,
 bool Utf8String_is_codepoint_start(const struct Utf8String *s, size_t i) {
 	if (i >= s->size) {
 		return false;
-	} else return get_codepoint_len(*(s->bytes + i)) != -1;
+	} else
+		return get_codepoint_len(*(s->bytes + i)) != -1;
 }
 
 bool Utf8String_ends_with(struct Utf8String *s, const struct Utf8String *end) {
 	if (end->size > s->size) {
 		return false;
 	}
-	if (memcmp(s->bytes + (s->size - end->size), end->bytes, end->size) == 0)
+	if (memcmp(s->bytes + (s->size - end->size), end->bytes, end->size) ==
+	    0)
 		return true;
 	else
 		return false;
